@@ -11,7 +11,8 @@ namespace WeatherForecast.CSharp.API.Implementations
 
         public JwtOptions(IConfiguration configuration)
         {
-            _key = configuration.GetValue<string>("Key");
+            SymmetricSecurityKey =
+                new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Key")));
             Issuer = configuration.GetValue<string>(nameof(Issuer));
             Audience = configuration.GetValue<string>(nameof(Audience));
             Lifetime = configuration.GetValue<int>(nameof(Lifetime));
@@ -23,9 +24,6 @@ namespace WeatherForecast.CSharp.API.Implementations
         
         public int Lifetime { get; }
         
-        public SymmetricSecurityKey GetSymmetricSecurityKey()
-        {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key));
-        }
+        public SymmetricSecurityKey SymmetricSecurityKey { get; }
     }
 }

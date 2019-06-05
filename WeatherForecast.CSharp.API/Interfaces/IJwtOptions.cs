@@ -10,6 +10,6 @@ namespace WeatherForecast.CSharp.API.Interfaces
 
         int Lifetime { get; }
 
-        SymmetricSecurityKey GetSymmetricSecurityKey();
+        SymmetricSecurityKey SymmetricSecurityKey { get; }
     }
 }

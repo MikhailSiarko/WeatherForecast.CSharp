@@ -43,7 +43,7 @@ namespace WeatherForecast.CSharp.API
                         ValidAudience = jwtOptions.Audience,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = jwtOptions.GetSymmetricSecurityKey()
+                        IssuerSigningKey = jwtOptions.SymmetricSecurityKey
                     };
                 });
             services.AddTransient<IAuthenticationService, AuthenticationService>();

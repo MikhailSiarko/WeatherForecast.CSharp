@@ -62,7 +62,7 @@ namespace WeatherForecast.CSharp.API.Implementations
                 notBefore: now,
                 claims: claims,
                 expires: now.Add(TimeSpan.FromMinutes(_jwtOptions.Lifetime)),
-                signingCredentials: new SigningCredentials(_jwtOptions.GetSymmetricSecurityKey(),
+                signingCredentials: new SigningCredentials(_jwtOptions.SymmetricSecurityKey,
                     SecurityAlgorithms.HmacSha256));
         }
     }
