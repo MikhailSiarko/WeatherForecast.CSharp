@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,7 +31,7 @@ namespace WeatherForecast.CSharp.Migrate
             return new ServiceCollection().AddFluentMigratorCore().ConfigureRunner(builder =>
             {
                 builder.AddSQLite()
-                    .WithGlobalConnectionString("Data Source=..\\Database.db")
+                    .WithGlobalConnectionString("Data Source=" + Path.Combine("..", "Database.db"))
                     .ScanIn(Assembly.GetExecutingAssembly())
                     .For.Migrations();
             });
