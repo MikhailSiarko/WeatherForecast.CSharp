@@ -7,15 +7,13 @@ namespace WeatherForecast.CSharp.API.Implementations
 {
     public class JwtOptions : IJwtOptions
     {
-        private readonly string _key;
-
         public JwtOptions(IConfiguration configuration)
         {
             SymmetricSecurityKey =
-                new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Key")));
-            Issuer = configuration.GetValue<string>(nameof(Issuer));
-            Audience = configuration.GetValue<string>(nameof(Audience));
-            Lifetime = configuration.GetValue<int>(nameof(Lifetime));
+                new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("JwtOptions:Key")));
+            Issuer = configuration.GetValue<string>("JwtOptions:Issuer");
+            Audience = configuration.GetValue<string>("JwtOptions:Audience");
+            Lifetime = configuration.GetValue<int>("JwtOptions:Lifetime");
         }
         
         public string Issuer { get; }

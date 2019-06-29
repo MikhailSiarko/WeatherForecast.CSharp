@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
+	<UserSecretsId>15ad9009-c662-4e74-921c-c21301f4f9fa</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,6 +12,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
+        <PackageReference Include="System.Text.Json" Version="4.6.0-preview6.19303.8" />
     </ItemGroup>
 
 </Project>

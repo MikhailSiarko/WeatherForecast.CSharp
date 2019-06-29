@@ -1,9 +1,13 @@
+using System.Text.Json.Serialization;
+
 namespace WeatherForecast.CSharp.API.Database.Entities
 {
-    public class Weather : Entity
+    public class Weather : ForecastItemEntity
     {
-        public string  Main { get; set; }
+        [JsonPropertyName("main")]
+        public string Main { get; set; }
 
+        [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 }

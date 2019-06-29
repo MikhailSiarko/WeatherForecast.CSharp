@@ -49,6 +49,8 @@ namespace WeatherForecast.CSharp.API
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IEncryptionService, EncryptionService>();
+            services.AddTransient<IForecastDeserializer<string>, ForecastJsonDeserializer>();
+            services.AddTransient<IForecastService, ForecastService>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
