@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using WeatherForecast.CSharp.API.Database.Entities;
+using WeatherForecast.CSharp.API.Types.Dto;
 
 namespace WeatherForecast.CSharp.API.Interfaces
 {
     public interface IForecastService
     {
-        Task<Forecast> GetForecastAsync(string city);
+        Task<ForecastDto> GetForecastAsync(string city);
     }
 }

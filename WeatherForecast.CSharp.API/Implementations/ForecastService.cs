@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WeatherForecast.CSharp.API.Database;
@@ -11,6 +12,7 @@ using WeatherForecast.CSharp.API.Database.Entities;
 using WeatherForecast.CSharp.API.Exceptions;
 using WeatherForecast.CSharp.API.Infrastructure;
 using WeatherForecast.CSharp.API.Interfaces;
+using WeatherForecast.CSharp.API.Types.Dto;
 
 namespace WeatherForecast.CSharp.API.Implementations
 {
@@ -21,17 +23,19 @@ namespace WeatherForecast.CSharp.API.Implementations
         private readonly string _appId;
         private readonly IForecastDeserializer<string> _deserializer;
         private readonly string _forecastUrl;
+        private readonly IMapper _mapper;
 
-        public ForecastService(AppDbContext dbContext, IConfiguration configuration, IForecastDeserializer<string> deserializer)
+        public ForecastService(AppDbContext dbContext, IConfiguration configuration, IForecastDeserializer<string> deserializer, IMapper mapper)
         {
             _dbContext = dbContext;
             _deserializer = deserializer;
+            _mapper = mapper;
             _forecastUrl = configuration.GetValue<string>("ForecastUrl");
             _expirationTime = configuration.GetValue<int>("ExpirationTime");
             _appId = configuration.GetValue<string>("WeatherForecastServiceApiKey");
         }
 
-        public async Task<Forecast> GetForecastAsync(string city)
+        public async Task<ForecastDto> GetForecastAsync(string city)
         {
             var forecast = await _dbContext.Forecasts
                 .Include(_dbContext.GetIncludePaths<Forecast>())
@@ -39,12 +43,12 @@ namespace WeatherForecast.CSharp.API.Implementations
             
             if (forecast != null && ForecastIsValid(forecast))
             {
-                return forecast;
+                return _mapper.Map<Forecast, ForecastDto>(forecast);
             }
             
             var newForecast = await FetchForecast(city);
             await UpdateOrAddForecast(forecast, newForecast);
-            return forecast;
+            return _mapper.Map<Forecast, ForecastDto>(forecast);
         }
 
         private async Task UpdateOrAddForecast(Forecast forecast, Forecast newForecast)

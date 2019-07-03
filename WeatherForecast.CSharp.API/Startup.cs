@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Reflection;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using WeatherForecast.CSharp.API.Database;
 using WeatherForecast.CSharp.API.Implementations;
 using WeatherForecast.CSharp.API.Infrastructure;
 using WeatherForecast.CSharp.API.Interfaces;
+using WeatherForecast.CSharp.API.MapperProfiles;
 
 namespace WeatherForecast.CSharp.API
 {
@@ -51,6 +54,7 @@ namespace WeatherForecast.CSharp.API
             services.AddTransient<IEncryptionService, EncryptionService>();
             services.AddTransient<IForecastDeserializer<string>, ForecastJsonDeserializer>();
             services.AddTransient<IForecastService, ForecastService>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
