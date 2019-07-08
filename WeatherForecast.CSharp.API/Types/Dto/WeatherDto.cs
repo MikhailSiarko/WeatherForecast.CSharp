@@ -1,6 +1,6 @@
 namespace WeatherForecast.CSharp.API.Types.Dto
 {
-    public class WeatherDto : ForecastItemEntityDto
+    public class WeatherDto : ForecastTimeItemEntityDto
     {
         public string Main { get; set; }
 

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace WeatherForecast.CSharp.API.Database.Entities
 {
-    public class Weather : ForecastItemEntity
+    public class Weather : ForecastTimeItemEntity
     {
         [JsonPropertyName("main")]
         public string Main { get; set; }

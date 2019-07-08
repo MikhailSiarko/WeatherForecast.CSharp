@@ -26,6 +26,12 @@ namespace WeatherForecast.CSharp.Migrate.Migrations
                 .WithColumn("ForecastId").AsInt32().Indexed("IX_ForecastItems_ForecastId")
                 .ForeignKey("FK_ForecastItems_Forecasts_Id", "Forecasts", "Id").NotNullable()
                 .WithColumn("Date").AsDateTime().NotNullable();
+            
+            Create.Table("ForecastTimeItems")
+                .WithColumn("Id").AsInt64().Indexed("IX_ForecastTimeItems_Id").Identity().PrimaryKey("PK_ForecastTimeItems").NotNullable()
+                .WithColumn("Time").AsTime().NotNullable()
+                .WithColumn("ForecastItemId").AsInt64().Indexed("IX_Mains_ForecastItemId")
+                .ForeignKey("FK_Mains_ForecastItems_Id", "ForecastItems", "Id").NotNullable();
 
             Create.Table("Mains")
                 .WithColumn("Id").AsInt64().Indexed("IX_Mains_Id").Identity().PrimaryKey("PK_Mains").NotNullable()
@@ -34,28 +40,30 @@ namespace WeatherForecast.CSharp.Migrate.Migrations
                 .WithColumn("MaxTemp").AsDecimal().NotNullable()
                 .WithColumn("Pressure").AsDecimal().NotNullable()
                 .WithColumn("Humidity").AsInt32().NotNullable()
-                .WithColumn("ForecastItemId").AsInt64().Indexed("IX_Mains_ForecastItemId")
-                .ForeignKey("FK_Mains_ForecastItems_Id", "ForecastItems", "Id").NotNullable();
+                .WithColumn("ForecastTimeItemId").AsInt64().Indexed("IX_Mains_ForecastTimeItemId")
+                .ForeignKey("FK_Mains_ForecastTimeItems_Id", "ForecastTimeItems", "Id").NotNullable();
 
             Create
                 .Table("Weathers")
                 .WithColumn("Id").AsInt64().Indexed("IX_Weathers_Id").Identity().PrimaryKey("PK_Weathers").NotNullable()
                 .WithColumn("Main").AsFixedLengthString(50).NotNullable()
                 .WithColumn("Description").AsFixedLengthString(100).NotNullable()
-                .WithColumn("ForecastItemId").AsInt64().Indexed("IX_Weathers_ForecastItemId")
-                .ForeignKey("FK_Weathers_ForecastItems_Id", "ForecastItems", "Id").NotNullable();
+                .WithColumn("Icon").AsString().NotNullable()
+                .WithColumn("ForecastTimeItemId").AsInt64().Indexed("IX_Weathers_ForecastTimeItemId")
+                .ForeignKey("FK_Weathers_ForecastTimeItems_Id", "ForecastTimeItems", "Id").NotNullable();
 
             Create.Table("Winds")
                 .WithColumn("Id").AsInt64().Indexed("IX_Winds_Id").Identity().PrimaryKey("PK_Winds").NotNullable()
                 .WithColumn("Speed").AsDecimal().NotNullable()
                 .WithColumn("Degree").AsDecimal().NotNullable()
-                .WithColumn("ForecastItemId").AsInt64().Indexed("IX_Winds_ForecastItemId")
-                .ForeignKey("FK_Winds_ForecastItems_Id", "ForecastItems", "Id").NotNullable();
+                .WithColumn("ForecastTimeItemId").AsInt64().Indexed("IX_Winds_ForecastTimeItemId")
+                .ForeignKey("FK_Winds_ForecastTimeItems_Id", "ForecastTimeItems", "Id").NotNullable();
         }
 
         public override void Down()
         {
             Delete.Table("ForecastItems");
+            Delete.Table("ForecastTimeItems");
             Delete.Table("Forecasts");
             Delete.Table("Users");
             Delete.Table("Mains");

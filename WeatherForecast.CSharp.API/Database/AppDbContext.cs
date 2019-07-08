@@ -7,6 +7,7 @@ namespace WeatherForecast.CSharp.API.Database
     {
         public DbSet<Forecast> Forecasts { get; set; }
         public DbSet<ForecastItem> ForecastItems { get; set; }
+        public DbSet<ForecastTimeItem> ForecastTimeItems { get; set; }
         public DbSet<Main> Mains { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Weather> Weathers { get; set; }

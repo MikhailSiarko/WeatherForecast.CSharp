@@ -43,7 +43,8 @@ namespace WeatherForecast.CSharp.API.Implementations
                 Login = login,
                 Password = _encryptionService.Encrypt(password)
             };
-            await _dbContext.AddAsync(user);
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
             return _authenticationService.Authenticate(user);
         }
     }

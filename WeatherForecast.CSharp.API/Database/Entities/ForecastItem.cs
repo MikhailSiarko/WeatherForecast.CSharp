@@ -7,11 +7,7 @@ namespace WeatherForecast.CSharp.API.Database.Entities
     {
         public int ForecastId { get; set; }
 
-        public virtual Main Main { get; set; }
-        
-        public virtual IEnumerable<Weather> Weathers { get; set; }
-
-        public virtual Wind Wind { get; set; }
+        public IEnumerable<ForecastTimeItem> ForecastTimeItems { get; set; }
 
         public DateTimeOffset Date { get; set; }
     }

@@ -10,6 +10,7 @@ namespace WeatherForecast.CSharp.API.MapperProfiles
         {
             CreateMap<Forecast, ForecastDto>();
             CreateMap<ForecastItem, ForecastItemDto>();
+            CreateMap<ForecastTimeItem, ForecastTimeItemDto>();
             CreateMap<Main, MainDto>();
             CreateMap<Weather, WeatherDto>();
             CreateMap<Wind, WindDto>();

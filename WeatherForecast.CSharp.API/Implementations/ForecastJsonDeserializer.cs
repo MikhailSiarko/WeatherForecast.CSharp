@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WeatherForecast.CSharp.API.Database.Entities;
@@ -21,22 +22,32 @@ namespace WeatherForecast.CSharp.API.Implementations
 
                 var items = new List<ForecastItem>();
 
-                foreach (var section in itemsJson.EnumerateArray())
+                foreach (var section in itemsJson.EnumerateArray().GroupBy(x => DateTimeOffset.Parse(x.GetProperty("dt_txt").ToString()).Date))
                 {
-                    var main = JsonSerializer.Parse<Main>(section.GetProperty("main").ToString());
-                    var wind = JsonSerializer.Parse<Wind>(section.GetProperty("wind").ToString());
-                    var weathers = new List<Weather>();
-                    foreach (var weatherJson in section.GetProperty("weather").EnumerateArray())
+                    var timeItems = new List<ForecastTimeItem>();
+                    foreach (var jsonElement in section.ToList())
                     {
-                        weathers.Add(JsonSerializer.Parse<Weather>(weatherJson.ToString()));
+                        var main = JsonSerializer.Parse<Main>(jsonElement.GetProperty("main").ToString());
+                        var wind = JsonSerializer.Parse<Wind>(jsonElement.GetProperty("wind").ToString());
+                        var weathers = new List<Weather>();
+                        foreach (var weatherJson in jsonElement.GetProperty("weather").EnumerateArray())
+                        {
+                            weathers.Add(JsonSerializer.Parse<Weather>(weatherJson.ToString()));
+                        }
+                        
+                        timeItems.Add(new ForecastTimeItem
+                        {
+                            Main = main,
+                            Weathers = weathers,
+                            Wind = wind,
+                            Time = DateTimeOffset.Parse(jsonElement.GetProperty("dt_txt").ToString()).TimeOfDay
+                        });
                     }
 
                     items.Add(new ForecastItem
                     {
-                        Weathers = weathers,
-                        Main = main,
-                        Wind = wind,
-                        Date = DateTimeOffset.Parse(section.GetProperty("dt_txt").GetString())
+                        ForecastTimeItems = timeItems,
+                        Date = section.Key
                     });
                 }
 

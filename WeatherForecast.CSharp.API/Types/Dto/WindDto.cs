@@ -1,6 +1,6 @@
 namespace WeatherForecast.CSharp.API.Types.Dto
 {
-    public class WindDto : ForecastItemEntityDto
+    public class WindDto : ForecastTimeItemEntityDto
     {
         public decimal Speed { get; set; }
 
