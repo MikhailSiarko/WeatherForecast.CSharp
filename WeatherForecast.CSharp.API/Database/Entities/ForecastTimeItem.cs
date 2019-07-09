@@ -7,7 +7,7 @@ namespace WeatherForecast.CSharp.API.Database.Entities
     {
         public int ForecastItemId { get; set; }
 
-        public TimeSpan Time { get; set; }
+        public DateTimeOffset Time { get; set; }
         
         public virtual Main Main { get; set; }
         

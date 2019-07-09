@@ -29,7 +29,7 @@ namespace WeatherForecast.CSharp.Migrate.Migrations
             
             Create.Table("ForecastTimeItems")
                 .WithColumn("Id").AsInt64().Indexed("IX_ForecastTimeItems_Id").Identity().PrimaryKey("PK_ForecastTimeItems").NotNullable()
-                .WithColumn("Time").AsTime().NotNullable()
+                .WithColumn("Time").AsDateTime().NotNullable()
                 .WithColumn("ForecastItemId").AsInt64().Indexed("IX_Mains_ForecastItemId")
                 .ForeignKey("FK_Mains_ForecastItems_Id", "ForecastItems", "Id").NotNullable();
 

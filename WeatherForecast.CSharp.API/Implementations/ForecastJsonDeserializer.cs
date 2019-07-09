@@ -40,7 +40,7 @@ namespace WeatherForecast.CSharp.API.Implementations
                             Main = main,
                             Weathers = weathers,
                             Wind = wind,
-                            Time = DateTimeOffset.Parse(jsonElement.GetProperty("dt_txt").ToString()).TimeOfDay
+                            Time = DateTimeOffset.Parse(jsonElement.GetProperty("dt_txt").ToString())
                         });
                     }
 
