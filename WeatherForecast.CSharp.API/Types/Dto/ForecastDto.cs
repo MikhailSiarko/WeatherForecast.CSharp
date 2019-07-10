@@ -8,10 +8,10 @@ namespace WeatherForecast.CSharp.API.Types.Dto
     {
         public string CountryCode { get; set; }
 
-        public string Location { get; set; }
+        public string City { get; set; }
 
         public DateTimeOffset Created { get; set; }
         
-        public IEnumerable<ForecastItem> ForecastItems { get; set; }
+        public IEnumerable<ForecastItem> Items { get; set; }
     }
 }

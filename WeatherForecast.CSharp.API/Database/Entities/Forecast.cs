@@ -10,10 +10,10 @@ namespace WeatherForecast.CSharp.API.Database.Entities
         public string CountryCode { get; set; }
 
         [JsonPropertyName("name")]
-        public string Location { get; set; }
+        public string City { get; set; }
 
         public DateTimeOffset Created { get; set; }
         
-        public IEnumerable<ForecastItem> ForecastItems { get; set; }
+        public IEnumerable<ForecastItem> Items { get; set; }
     }
 }

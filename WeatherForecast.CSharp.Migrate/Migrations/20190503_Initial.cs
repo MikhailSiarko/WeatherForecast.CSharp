@@ -17,7 +17,7 @@ namespace WeatherForecast.CSharp.Migrate.Migrations
                 .WithColumn("Id").AsInt32().Indexed("IX_Forecasts_Id").Identity().PrimaryKey("PK_Forecasts")
                 .NotNullable()
                 .WithColumn("CountryCode").AsFixedLengthString(10).NotNullable()
-                .WithColumn("Location").AsFixedLengthString(100).NotNullable()
+                .WithColumn("City").AsFixedLengthString(100).NotNullable()
                 .WithColumn("Created").AsDateTime().NotNullable();
 
             Create.Table("ForecastItems")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
 using WeatherForecast.CSharp.API.Database.Entities;
 using WeatherForecast.CSharp.API.Interfaces;
 
@@ -10,6 +11,13 @@ namespace WeatherForecast.CSharp.API.Implementations
 {
     public class ForecastJsonDeserializer : IForecastDeserializer<string>
     {
+        private readonly IConfiguration _configuration;
+        
+        public ForecastJsonDeserializer(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        
         public Forecast Deserialize(string source)
         {
             using (var document = JsonDocument.Parse(source))
@@ -29,16 +37,13 @@ namespace WeatherForecast.CSharp.API.Implementations
                     {
                         var main = JsonSerializer.Parse<Main>(jsonElement.GetProperty("main").ToString());
                         var wind = JsonSerializer.Parse<Wind>(jsonElement.GetProperty("wind").ToString());
-                        var weathers = new List<Weather>();
-                        foreach (var weatherJson in jsonElement.GetProperty("weather").EnumerateArray())
-                        {
-                            weathers.Add(JsonSerializer.Parse<Weather>(weatherJson.ToString()));
-                        }
-                        
+                        var weatherJson = jsonElement.GetProperty("weather").EnumerateArray().First();
+                        var weather = JsonSerializer.Parse<Weather>(weatherJson.ToString());
+                        weather.Icon = string.Format(_configuration.GetSection("IconUrlFormat").Value, weather.Icon);
                         timeItems.Add(new ForecastTimeItem
                         {
                             Main = main,
-                            Weathers = weathers,
+                            Weather = weather,
                             Wind = wind,
                             Time = DateTimeOffset.Parse(jsonElement.GetProperty("dt_txt").ToString())
                         });
@@ -46,12 +51,12 @@ namespace WeatherForecast.CSharp.API.Implementations
 
                     items.Add(new ForecastItem
                     {
-                        ForecastTimeItems = timeItems,
+                        TimeItems = timeItems,
                         Date = section.Key
                     });
                 }
 
-                forecast.ForecastItems = items;
+                forecast.Items = items;
 
                 return forecast;
             }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace WeatherForecast.CSharp.API.Database.Entities
 {
@@ -11,7 +10,7 @@ namespace WeatherForecast.CSharp.API.Database.Entities
         
         public virtual Main Main { get; set; }
         
-        public virtual IEnumerable<Weather> Weathers { get; set; }
+        public virtual Weather Weather { get; set; }
 
         public virtual Wind Wind { get; set; }
     }

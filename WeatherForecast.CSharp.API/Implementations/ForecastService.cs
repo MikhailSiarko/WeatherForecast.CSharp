@@ -36,7 +36,7 @@ namespace WeatherForecast.CSharp.API.Implementations
         {
             var forecast = await _dbContext.Forecasts
                 .Include(_dbContext.GetIncludePaths<Forecast>())
-                .SingleOrDefaultAsync(f => f.Location == city);
+                .SingleOrDefaultAsync(f => f.City == city);
             
             if (forecast != null && ForecastIsValid(forecast))
             {
@@ -44,25 +44,25 @@ namespace WeatherForecast.CSharp.API.Implementations
             }
             
             var newForecast = await FetchForecast(city);
-            await UpdateOrAddForecast(forecast, newForecast);
+            forecast = await UpdateOrAddForecast(forecast, newForecast);
             return _mapper.Map<Forecast, ForecastDto>(forecast);
         }
 
-        private async Task UpdateOrAddForecast(Forecast forecast, Forecast newForecast)
+        private async Task<Forecast> UpdateOrAddForecast(Forecast forecast, Forecast newForecast)
         {
             if (forecast == null)
             {
                 newForecast.Created = DateTimeOffset.Now;
                 _dbContext.Forecasts.Add(newForecast);
                 await _dbContext.SaveChangesAsync();
+                return newForecast;
             }
-            else
-            {
-                _dbContext.ForecastItems.RemoveRange(forecast.ForecastItems);
-                forecast.ForecastItems = newForecast.ForecastItems;
-                forecast.Created = DateTimeOffset.Now;
-                await _dbContext.SaveChangesAsync();
-            }
+            
+            _dbContext.ForecastItems.RemoveRange(forecast.Items);
+            forecast.Items = newForecast.Items; 
+            forecast.Created = DateTimeOffset.Now;
+            await _dbContext.SaveChangesAsync();
+            return forecast;
         }
 
         private async Task<Forecast> FetchForecast(string city)

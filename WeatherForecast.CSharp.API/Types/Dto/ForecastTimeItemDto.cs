@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace WeatherForecast.CSharp.API.Types.Dto
 {
@@ -7,11 +6,11 @@ namespace WeatherForecast.CSharp.API.Types.Dto
     {
         public int ForecastItemId { get; set; }
         
-        public virtual MainDto Main { get; set; }
+        public MainDto Main { get; set; }
         
-        public virtual IEnumerable<WeatherDto> Weathers { get; set; }
+        public WeatherDto Weather { get; set; }
 
-        public virtual WindDto Wind { get; set; }
+        public WindDto Wind { get; set; }
 
         public DateTime Time { get; set; }
     }
