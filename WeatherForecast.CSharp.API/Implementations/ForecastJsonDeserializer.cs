@@ -33,13 +33,13 @@ namespace WeatherForecast.CSharp.API.Implementations
                 foreach (var section in itemsJson.EnumerateArray().GroupBy(x => DateTimeOffset.Parse(x.GetProperty("dt_txt").ToString()).Date))
                 {
                     var timeItems = new List<ForecastTimeItem>();
-                    foreach (var jsonElement in section.ToList())
+                    foreach (var jsonElement in section)
                     {
                         var main = JsonSerializer.Parse<Main>(jsonElement.GetProperty("main").ToString());
                         var wind = JsonSerializer.Parse<Wind>(jsonElement.GetProperty("wind").ToString());
                         var weatherJson = jsonElement.GetProperty("weather").EnumerateArray().First();
                         var weather = JsonSerializer.Parse<Weather>(weatherJson.ToString());
-                        weather.Icon = string.Format(_configuration.GetSection("IconUrlFormat").Value, weather.Icon);
+                        weather.Icon = string.Format(_configuration.GetSection("WeatherAPI:IconUrlFormat").Value, weather.Icon);
                         timeItems.Add(new ForecastTimeItem
                         {
                             Main = main,

@@ -21,13 +21,19 @@ namespace WeatherForecast.CSharp.API.Implementations
         private readonly IForecastDeserializer<string> _deserializer;
         private readonly string _forecastUrl;
         private readonly IMapper _mapper;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public ForecastService(AppDbContext dbContext, IConfiguration configuration, IForecastDeserializer<string> deserializer, IMapper mapper)
+        public ForecastService(AppDbContext dbContext,
+            IConfiguration configuration,
+            IForecastDeserializer<string> deserializer,
+            IMapper mapper,
+            IHttpClientFactory clientFactory)
         {
             _dbContext = dbContext;
             _deserializer = deserializer;
             _mapper = mapper;
-            _forecastUrl = configuration.GetValue<string>("ForecastUrl");
+            _clientFactory = clientFactory;
+            _forecastUrl = configuration.GetValue<string>("WeatherAPI:ForecastUrlFormat");
             _expirationTime = configuration.GetValue<int>("ExpirationTime");
             _appId = configuration.GetValue<string>("WeatherForecastServiceApiKey");
         }
@@ -67,9 +73,11 @@ namespace WeatherForecast.CSharp.API.Implementations
 
         private async Task<Forecast> FetchForecast(string city)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = _clientFactory.CreateClient("weather"))
             {
-                var response  = await httpClient.GetAsync(string.Format(_forecastUrl, city, _appId));
+                var request = new HttpRequestMessage(HttpMethod.Get, string.Format(_forecastUrl, city, _appId));
+
+                var response = await httpClient.SendAsync(request);
             
                 if (!response.IsSuccessStatusCode)
                 {

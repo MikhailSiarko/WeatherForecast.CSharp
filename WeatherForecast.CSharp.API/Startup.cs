@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,10 @@ namespace WeatherForecast.CSharp.API
                 builder.UseSqlite(Configuration.GetConnectionString("Default"));
             });
             services.AddCors();
+            services.AddHttpClient("weather", client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetValue<string>("WeatherAPI:BaseUrl"));
+            });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
