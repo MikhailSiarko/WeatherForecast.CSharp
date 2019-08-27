@@ -25,7 +25,7 @@ namespace WeatherForecast.CSharp.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton<JwtOptions>()
-                .ConfigureStore(Configuration, "Default")
+                .ConfigureStorage(Configuration, "Default")
                 .AddCors()
                 .AddTransient<IStorageService<Forecast, string>, ForecastStorageService>()
                 .AddTransient<IStorageService<User, string>, UserStorageService>()

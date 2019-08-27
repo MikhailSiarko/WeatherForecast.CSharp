@@ -58,7 +58,7 @@ namespace WeatherForecast.CSharp.Storage
             }
         }
 
-        public static IServiceCollection ConfigureStore(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
+        public static IServiceCollection ConfigureStorage(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
         {
             return services.AddDbContextPool<AppDbContext>(builder =>
             {
