@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Reflection;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using WeatherForecast.CSharp.API.Database;
-using WeatherForecast.CSharp.API.Implementations;
 using WeatherForecast.CSharp.API.Infrastructure;
-using WeatherForecast.CSharp.API.Interfaces;
-using WeatherForecast.CSharp.API.MapperProfiles;
+using WeatherForecast.CSharp.Domain;
+using WeatherForecast.CSharp.Authentication;
+using WeatherForecast.CSharp.Storage;
+using WeatherForecast.CSharp.ForecastProvider;
 
 namespace WeatherForecast.CSharp.API
 {
@@ -29,37 +24,24 @@ namespace WeatherForecast.CSharp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IJwtOptions, JwtOptions>();
-            services.AddDbContextPool<AppDbContext>(builder =>
-            {
-                builder.UseSqlite(Configuration.GetConnectionString("Default"));
-            });
-            services.AddCors();
+            services.AddSingleton<JwtOptions>()
+                .ConfigureStorage(Configuration, "Default")
+                .AddCors()
+                .AddTransient<IStorageService<Forecast, string>, ForecastStorageService>()
+                .AddTransient<IStorageService<User, string>, UserStorageService>()
+                .AddTransient<IForecastProvider, WebAPIForecastProvider>()
+                .AddTransient<IAuthenticationService, AuthenticationService>()
+                .AddTransient<IAccountService, AccountService>()
+                .AddTransient<IEncryptionService, EncryptionService>()
+                .AddTransient<IForecastDeserializer<string>, ForecastJsonDeserializer>()
+                .AddTransient<IForecastService, ForecastService>()
+                .ConfigureAuthentication()
+                .RegisterAutomapper();
+
             services.AddHttpClient("weather", client =>
             {
                 client.BaseAddress = new Uri(Configuration.GetValue<string>("WeatherAPI:BaseUrl"));
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    var jwtOptions = services.BuildServiceProvider(false).GetService<IJwtOptions>();
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtOptions.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = jwtOptions.Audience,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = jwtOptions.SymmetricSecurityKey
-                    };
-                });
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IEncryptionService, EncryptionService>();
-            services.AddTransient<IForecastDeserializer<string>, ForecastJsonDeserializer>();
-            services.AddTransient<IForecastService, ForecastService>();
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

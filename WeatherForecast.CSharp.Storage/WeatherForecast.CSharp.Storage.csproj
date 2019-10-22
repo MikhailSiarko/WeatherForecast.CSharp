@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <AssemblyName>WeatherForecast.CSharp.Storage</AssemblyName>
+        <RootNamespace>WeatherForecast.CSharp.Storage</RootNamespace>
+        <PackageId>WeatherForecast.CSharp.Storage</PackageId>
+        <Authors>WeatherForecast.CSharp.Storage</Authors>
+        <Company>WeatherForecast.CSharp.Storage</Company>
+        <Product>WeatherForecast.CSharp.Storage</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="8.1.1" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WeatherForecast.CSharp.Domain\WeatherForecast.CSharp.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

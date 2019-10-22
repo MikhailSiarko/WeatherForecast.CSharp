@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WeatherForecast.CSharp.API.Interfaces;
-using WeatherForecast.CSharp.API.Types;
-using WeatherForecast.CSharp.API.Types.RequestData;
+using WeatherForecast.CSharp.API.RequestData;
+using WeatherForecast.CSharp.Domain;
 
 namespace WeatherForecast.CSharp.API.Controllers
 {
