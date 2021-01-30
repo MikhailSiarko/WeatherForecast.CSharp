@@ -18,8 +18,8 @@ namespace WeatherForecast.CSharp.ForecastProvider
         {
             _forecastDeserializer = forecastDeserializer;
             _clientFactory = clientFactory;
-            _forecastUrl = configuration.GetValue<string>("WeatherAPI:ForecastUrlFormat");
-            _appId = configuration.GetValue<string>("WeatherForecastServiceApiKey");
+            _forecastUrl = configuration["WeatherAPI:ForecastUrlFormat"];
+            _appId = configuration["WeatherForecastServiceApiKey"];
         }
 
         public async Task<Forecast> FetchForecastAsync(string location)

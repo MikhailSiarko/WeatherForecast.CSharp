@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,7 +41,7 @@ namespace WeatherForecast.CSharp.Storage
                 {
                     foreach (var navigation in entityProperties)
                     {
-                        var inverseNavigation = navigation.FindInverse();
+                        var inverseNavigation = navigation.Inverse;
                         if (inverseNavigation != null)
                             includedProperties.Add(inverseNavigation);
                     }
@@ -54,7 +55,7 @@ namespace WeatherForecast.CSharp.Storage
                     enumerator.Dispose();
                 }
                 if (stack.Count == 0) break;
-                entityType = stack.Peek().Current.GetTargetType();
+                entityType = (stack.Peek().Current ?? throw new InvalidOperationException()).TargetEntityType;
             }
         }
 

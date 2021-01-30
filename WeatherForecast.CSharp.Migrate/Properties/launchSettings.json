@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WeatherForecast.CSharp.Migrate": {
-      "commandName": "Project",
-      "commandLineArgs": "-t Up"
-    }
-  }
-}
